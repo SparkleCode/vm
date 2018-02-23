@@ -1,5 +1,5 @@
 project(sparklecodemain)
 
-add_library(sparklecodemain chunk.c memory.c debug.c)
+add_library(sparklecodemain chunk.c memory.c debug.c value.c)
 
 set_property(TARGET sparklecodemain PROPERTY C_STANDARD 99)

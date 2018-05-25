@@ -9,6 +9,8 @@ void disassembleChunk(Chunk* chunk, const char* name) {
   for(int i = 0; i < chunk->count;){
     i = disassembleInstruction(chunk, i);
   }
+
+  printf("=== end %s ===\n", name);
 }
 
 static int SimpleInstruction(const char* name, int offset) {

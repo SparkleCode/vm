@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// print extra debugging infomation
 #define DEBUG_TRACE_EXCECUTION
 
 #endif // common_h

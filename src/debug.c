@@ -3,9 +3,11 @@
 #include "debug.h"
 #include "value.h"
 
+// print dissasembaly of a chunk of code
 void disassembleChunk(Chunk* chunk, const char* name) {
   printf("=== %s ===\n", name);
 
+  // iterate, increasing i by length of printed instruction in bytecode
   for(int i = 0; i < chunk->count;){
     i = disassembleInstruction(chunk, i);
   }
@@ -13,11 +15,14 @@ void disassembleChunk(Chunk* chunk, const char* name) {
   printf("=== end %s ===\n", name);
 }
 
+// print simple instruction, return new offset
 static int SimpleInstruction(const char* name, int offset) {
   printf("%s\n", name);
   return offset + 1;
 }
 
+// print constant instruction and its constant from the value array
+// return new offset
 static int ConstantInstruction(const char* name, Chunk* chunk, int offset) {
   uint8_t constant = chunk->code[offset + 1];
   printf("%-16s %4d '", name, constant);
@@ -26,9 +31,12 @@ static int ConstantInstruction(const char* name, Chunk* chunk, int offset) {
   return offset + 2;
 }
 
+// disasemble single instruction, print dissasembaly and return new offset
 int disassembleInstruction(Chunk* chunk, int offset) {
+  // print offset
   printf("%04d ", offset);
 
+  // print line neumber of instruction
   int line = getLine(chunk, offset);
   if(offset > 0 && line == getLine(chunk, offset - 1)){
     printf("   | ");
@@ -36,6 +44,7 @@ int disassembleInstruction(Chunk* chunk, int offset) {
     printf("%4d ", chunk->lines[offset]);
   }
 
+  // map op code to instruction
   uint8_t instruction = chunk->code[offset];
   switch(instruction){
     case OP_RETURN:

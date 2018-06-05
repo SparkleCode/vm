@@ -7,7 +7,7 @@
 typedef double Value;
 
 // list of values - dynamic array
-typedef struct {
+typedef struct ValueArray {
   int capacity;
   int count;
   Value* values;

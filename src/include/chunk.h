@@ -5,13 +5,13 @@
 #include "value.h"
 
 // all operators in the virtual machine
-typedef enum {
+typedef enum OpCode {
     OP_RETURN,
     OP_CONSTANT
 } OpCode;
 
 // start of a line in runtime length encoding - used for debug location
-typedef struct {
+typedef struct LineStart {
     int offset;
     int line;
 } LineStart;
@@ -20,7 +20,7 @@ typedef struct {
 // and the code->line mapping infomation for debugging
 // count/capacity and lineCount/lineCapacity are the array infomation
 // for the opcode list and the debugging map list respectively
-typedef struct {
+typedef struct Chunk {
     int count;
     int capacity;
     uint8_t* code;

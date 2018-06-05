@@ -41,7 +41,7 @@ int disassembleInstruction(Chunk* chunk, int offset) {
   if(offset > 0 && line == getLine(chunk, offset - 1)){
     printf("   | ");
   } else {
-    printf("%4d ", chunk->lines[offset]);
+    printf("%4d ", line);
   }
 
   // map op code to instruction
@@ -49,6 +49,16 @@ int disassembleInstruction(Chunk* chunk, int offset) {
   switch(instruction){
     case OP_RETURN:
       return SimpleInstruction("OP_RETURN", offset);
+    case OP_NEGATE:
+      return SimpleInstruction("OP_NEGATE", offset);
+    case OP_ADD:
+      return SimpleInstruction("OP_ADD", offset);
+    case OP_SUBTRACT:
+      return SimpleInstruction("OP_SUBTRACT", offset);
+    case OP_MULTIPLY:
+      return SimpleInstruction("OP_MULTIPLY", offset);
+    case OP_DIVIDE:
+      return SimpleInstruction("OP_DIVIDE", offset);
     case OP_CONSTANT:
       return ConstantInstruction("OP_CONSTANT", chunk, offset);
     default:

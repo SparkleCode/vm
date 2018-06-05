@@ -7,6 +7,11 @@
 // all operators in the virtual machine
 typedef enum OpCode {
     OP_RETURN,
+    OP_NEGATE,
+    OP_ADD,
+    OP_SUBTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE,
     OP_CONSTANT
 } OpCode;
 

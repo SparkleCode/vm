@@ -25,8 +25,17 @@ void freeVM() {
 static InterpretResult run() {
   // get next byte from chunk
   #define READ_BYTE() (*vm.ip++)
+
   // get next byte from chunk and use it to get a constant value
   #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
+
+  // consume binary operator's arguments and then do the operator
+  #define BINARY_OP(op) \
+    do { \
+      double b = pop(); \
+      double a = pop(); \
+      push(a op b); \
+    } while(false)
   
   for(;;){
     // if debugging, print opcode excecuted
@@ -45,19 +54,27 @@ static InterpretResult run() {
     switch(instruction = READ_BYTE()) {
       // interpret each op code!
       case OP_CONSTANT: {
+        // get constant value and add to the stack
         Value constant = READ_CONSTANT();
         push(constant);
-        printf("\n");
         break;
       }
+      case OP_NEGATE: {
+        push(-pop());
+        break;
+      }
+      case OP_ADD: BINARY_OP(+); break;
+      case OP_SUBTRACT: BINARY_OP(-); break;
+      case OP_MULTIPLY: BINARY_OP(*); break;
+      case OP_DIVIDE: BINARY_OP(/); break;
       case OP_RETURN: {
         printValue(pop());
-        printf("\n");
         return INTERPRET_OK;
       }
     }
   }
 
+  #undef BINARY_OP
   #undef READ_CONSTANT
   #undef READ_BYTE
 }

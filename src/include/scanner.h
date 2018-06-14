@@ -1,0 +1,46 @@
+#ifndef SCANNER_H
+#define SCANNER_H
+
+#define FOREACH_TOKEN(TOKEN) \
+  TOKEN(LEFT_PAREN) TOKEN(RIGHT_PAREN) \
+  TOKEN(LEFT_BRACE) TOKEN(RIGHT_BRACE) \
+  TOKEN(COMMA) TOKEN(DOT) TOKEN(MINUS) TOKEN(PLUS) \
+  TOKEN(SEMICOLON) TOKEN(SLASH) TOKEN(STAR) \
+  TOKEN(BANG) TOKEN(BANG_EQUAL) \
+  TOKEN(EQUAL) TOKEN(EQUAL_EQUAL) \
+  TOKEN(GREATER) TOKEN(GREATER_EQUAL) \
+  TOKEN(LESS) TOKEN(LESS_EQUAL) \
+  TOKEN(IDENTIFIER) TOKEN(STRING) TOKEN(NUMBER) \
+  TOKEN(AND) TOKEN(CLASS) TOKEN(ELSE) TOKEN(FALSE) \
+  TOKEN(FUN) TOKEN(FOR) TOKEN(IF) TOKEN(NIL) TOKEN(OR) \
+  TOKEN(PRINT) TOKEN(RETURN) TOKEN(SUPER) TOKEN(THIS) \
+  TOKEN(TRUE) TOKEN(VAR) TOKEN(WHILE) \
+  TOKEN(ERROR) \
+  TOKEN(EOF)
+
+#define TOKEN_ENUM(NAME) TOKEN_ ## NAME,
+#define TOKEN_STR(NAME) #NAME,
+
+typedef enum TokenType {
+  FOREACH_TOKEN(TOKEN_ENUM)
+} TokenType;
+
+static const char* const tokenNames[] = {
+  FOREACH_TOKEN(TOKEN_STR)
+};
+
+typedef struct Token {
+  TokenType type;
+  const char* start;
+  int length;
+  int line;
+} Token;
+
+void initScanner(const char* source);
+Token scanToken();
+
+#undef FOREACH_TOKEN
+#undef TOKEN_ENUM
+#undef TOKEN_STR
+
+#endif // SCANNER_H

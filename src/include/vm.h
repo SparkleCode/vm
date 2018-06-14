@@ -25,8 +25,8 @@ typedef enum InterpretResult {
 void initVM();
 void freeVM();
 
-// run chunk of code!
-InterpretResult interpretChunk(Chunk* chunk);
+// run source code!
+InterpretResult interpret(const char* source);
 
 // stack manipulation methods
 void push(Value value);

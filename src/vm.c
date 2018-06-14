@@ -2,6 +2,7 @@
 #include "common.h"
 #include "vm.h"
 #include "debug.h"
+#include "compiler.h"
 
 // single static VM instance
 VM vm; // TODO - make all vm methods take a vm pointer and get rid of this global variable
@@ -79,13 +80,9 @@ static InterpretResult run() {
   #undef READ_BYTE
 }
 
-// run chunk of code in a virtual machine
-InterpretResult interpretChunk(Chunk* chunk) {
-  // link the chunk and instruction pointer to the virtual machine
-  vm.chunk = chunk;
-  vm.ip = vm.chunk->code;
-  // run the chunk
-  return run();
+InterpretResult interpret(const char* source) {
+  compile(source);
+  return INTERPRET_OK;
 }
 
 // push value to top of stack and update pointer

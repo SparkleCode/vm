@@ -70,6 +70,7 @@ static InterpretResult run() {
       case OP_DIVIDE: BINARY_OP(/); break;
       case OP_RETURN: {
         printValue(pop());
+        printf("\n");
         return INTERPRET_OK;
       }
     }
@@ -81,8 +82,20 @@ static InterpretResult run() {
 }
 
 InterpretResult interpret(const char* source) {
-  compile(source);
-  return INTERPRET_OK;
+  Chunk chunk;
+  initChunk(&chunk);
+
+  if(!compile(source, &chunk)) {
+    freeChunk(&chunk);
+    return INTERPRET_COMPILE_ERROR;
+  }
+  vm.chunk = &chunk;
+  vm.ip = vm.chunk->code;
+
+  InterpretResult result = run();
+
+  freeChunk(&chunk);
+  return result;
 }
 
 // push value to top of stack and update pointer

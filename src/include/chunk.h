@@ -12,7 +12,11 @@ typedef enum OpCode {
     OP_SUBTRACT,
     OP_MULTIPLY,
     OP_DIVIDE,
-    OP_CONSTANT
+    OP_CONSTANT,
+    OP_NIL,
+    OP_TRUE,
+    OP_FALSE,
+    OP_NOT
 } OpCode;
 
 // start of a line in runtime length encoding - used for debug location

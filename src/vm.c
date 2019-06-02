@@ -37,6 +37,7 @@ void freeVM() {
 
 static Value peek(int distance);
 static bool isFalsey(Value value);
+bool valuesEqual(Value a, Value b);
 
 // run code, core excecution loop - main section of program
 // highly performance critical!
@@ -96,6 +97,8 @@ static InterpretResult run() {
       case OP_SUBTRACT: BINARY_OP(NUMBER_VAL, -); break;
       case OP_MULTIPLY: BINARY_OP(NUMBER_VAL, *); break;
       case OP_DIVIDE: BINARY_OP(NUMBER_VAL, /); break;
+      case OP_GREATER: BINARY_OP(BOOL_VAL, >); break;
+      case OP_LESS: BINARY_OP(BOOL_VAL, <); break;
       case OP_NOT:
         push(BOOL_VAL(isFalsey(pop())));
         break;
@@ -103,6 +106,12 @@ static InterpretResult run() {
         printValue(pop());
         printf("\n");
         return INTERPRET_OK;
+      }
+      case OP_EQUAL: {
+        Value b = pop();
+        Value a = pop();
+        push(BOOL_VAL(valuesEqual(a,b)));
+        break;
       }
     }
   }
@@ -147,4 +156,13 @@ static Value peek(int distance) {
 
 static bool isFalsey(Value value) {
   return IS_NIL(value) || (IS_BOOL(value) && !AS_BOOL(value));
+}
+
+bool valuesEqual(Value a, Value b) {
+  if(a.type != b.type) return false;
+  switch(a.type) {
+    case VAL_BOOL: return AS_BOOL(a) == AS_BOOL(b);
+    case VAL_NIL: return true;
+    case VAL_NUMBER: return AS_NUMBER(a) == AS_NUMBER(b);
+  }
 }
